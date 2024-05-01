@@ -1,12 +1,16 @@
 import React, { useState } from "react";
 
-const Jobcard = ({ job }) => {
+const Jobcard = ({ job, index }) => {
   const [readMore, setReadMore] = useState(false);
+  const i = 1;
+  const random = () => {
+    return Math.floor(Math.random() * 100) + 1;
+  };
   return (
     <>
       <div className="card" style={{ width: " 18rem" }}>
         <div>
-          <h1>Google</h1>
+          <h1>{`Google ${random()}`}</h1>
           <h3>{job.location}</h3>
         </div>
         <div className="card-body">
