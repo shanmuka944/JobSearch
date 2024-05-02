@@ -73,6 +73,7 @@ const Jobs = () => {
       const response = await fetch(URL, requestOptions);
       const jobres = await response.json();
       setjobs([...jobs, ...jobres.jdList]);
+      console.log(jobres.jdList);
     } catch (error) {
       console.log("couldnot fetch data");
     } finally {
@@ -118,7 +119,9 @@ const Jobs = () => {
           ? false
           : true;
       let minSalResult =
-        job.minJdSalary !== null && job.minJdSalary >= filters.minSalFilter
+        job.minJdSalary == null && filters.minSalFilter == 0
+          ? true
+          : job.minJdSalary !== null && job.minJdSalary >= filters.minSalFilter
           ? true
           : false;
 
@@ -154,12 +157,15 @@ const Jobs = () => {
       <Search filters={filters} setFilters={setFilters}></Search>
 
       <div class="container text-center">
-        <div class="row" style={{ minHeight: "100vh" }}>
+        <div
+          class="row"
+          style={{ minHeight: "100vh", maxWidth: "1200px", margin: "0 auto" }}
+        >
           {jobs
             .filter((job) => filterJobs(job))
             .map((job, index) => {
               return (
-                <div class="col-md-4 mb-2">
+                <div class="col-md-4 mb-2 cardWrapper">
                   <Jobcard key={job.jdUid} job={job} index={index}></Jobcard>
                 </div>
               );

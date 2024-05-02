@@ -7,7 +7,8 @@ const Search = ({ filters, setFilters }) => {
       <div className="jobFiltersWrapper row" style={{ display: "flex" }}>
         <div className="jobFilter">
           <Multiselect
-            displayValue="role"
+            placeholder="Role"
+            displayValue="Role"
             isObject={false}
             onKeyPressFn={function noRefCheck() {}}
             onRemove={(selectedvalues) => {
@@ -21,6 +22,7 @@ const Search = ({ filters, setFilters }) => {
         </div>
         <div className="jobFilter">
           <Multiselect
+            placeholder="Min Experience"
             displayValue="minexp"
             isObject={false}
             onKeyPressFn={function noRefCheck() {}}
@@ -35,6 +37,7 @@ const Search = ({ filters, setFilters }) => {
         </div>
         <div className="jobFilter">
           <Multiselect
+            placeholder="Location"
             displayValue="location"
             isObject={false}
             onKeyPressFn={function noRefCheck() {}}
@@ -49,12 +52,13 @@ const Search = ({ filters, setFilters }) => {
         </div>
         <div className="jobFilter">
           <select
+            placeholder="Remote/Onsite"
             className="form-control"
             onChange={(e) => {
               setFilters({ ...filters, remoteFilter: e.target.value });
             }}
           >
-            <option value="">Select</option>
+            <option value="">Remote/Onsite</option>
             <option value="remote">Remote</option>
             <option value="onsite">OnSite</option>
           </select>
