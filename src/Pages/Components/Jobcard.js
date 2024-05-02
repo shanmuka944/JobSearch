@@ -12,6 +12,7 @@ const Jobcard = ({ job, index }) => {
         <div>
           <h1>{`Google ${random()}`}</h1>
           <h3>{job.location}</h3>
+          <h4>{job.jobRole}</h4>
         </div>
         <div className="card-body">
           <h5 className="card-title">About Company</h5>
