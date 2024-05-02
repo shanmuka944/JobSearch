@@ -20,6 +20,7 @@ const Jobs = () => {
   const [totalJobs, setTotalJobs] = useState(0);
   let currentJobs = [];
 
+  //fetch jobs for first time
   const fetchjob = async () => {
     const myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
@@ -34,6 +35,7 @@ const Jobs = () => {
       headers: myHeaders,
       body: raw,
     };
+    //api call to fetch jobs
     try {
       const response = await fetch(URL, requestOptions);
       const jobres = await response.json();
@@ -50,6 +52,8 @@ const Jobs = () => {
   useEffect(() => {
     fetchjob();
   }, []);
+
+  //This will implement infinite scroll based on the screen height and width
 
   const fetchData = useCallback(async () => {
     if (isLoading) return;
@@ -99,7 +103,11 @@ const Jobs = () => {
     };
   }, [fetchData]);
 
+  //Filter logic
+
   const filterJobs = (job) => {
+    //we get every job to get filtered as per selected filters and returns true if conditions matches
+    //checks if all filters are empty or not and then procedd
     if (
       filters.roleFilter.length !== 0 ||
       filters.minexpfilter.length !== 0 ||
