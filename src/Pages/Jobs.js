@@ -6,10 +6,16 @@ import { ScaleLoader } from "react-spinners";
 const URL = "https://api.weekday.technology/adhoc/getSampleJdJSON";
 
 const Jobs = () => {
-  const [loading, setloading] = useState(true);
+  const [isLoading, setisLoading] = useState(true);
   const [jobs, setjobs] = useState([]);
   const [index, setIndex] = useState(1);
-  const [filters, setFilters] = useState({ roleFilter: [] });
+  const [filters, setFilters] = useState({
+    roleFilter: [],
+    minexpfilter: [],
+    locFilter: [],
+    remoteFilter: "",
+    minSalFilter: 0,
+  });
   const [fetchFlag, setFetchFlag] = useState(false);
   const [totalJobs, setTotalJobs] = useState(0);
   let currentJobs = [];
@@ -33,7 +39,8 @@ const Jobs = () => {
       const jobres = await response.json();
       setjobs(jobres.jdList);
       setTotalJobs(jobres.totalCount);
-      setloading(false);
+      setisLoading(false);
+      console.log(jobres.jdList);
     } catch (error) {
       console.log("couldnot fetch data");
     } finally {
@@ -45,9 +52,9 @@ const Jobs = () => {
   }, []);
 
   const fetchData = useCallback(async () => {
-    if (loading) return;
+    if (isLoading) return;
 
-    setloading(true);
+    setisLoading(true);
 
     const myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
@@ -72,8 +79,8 @@ const Jobs = () => {
     }
     setIndex((prevIndex) => prevIndex + 1);
 
-    setloading(false);
-  }, [index, loading]);
+    setisLoading(false);
+  }, [index, isLoading]);
 
   useEffect(() => {
     console.log("called");
@@ -92,12 +99,51 @@ const Jobs = () => {
   }, [fetchData]);
 
   const filterJobs = (job) => {
-    if (filters.roleFilter.length !== 0) {
-      let result = false;
+    if (
+      filters.roleFilter.length !== 0 ||
+      filters.minexpfilter.length !== 0 ||
+      filters.locFilter !== 0
+    ) {
+      let roleResult = filters.roleFilter.length === 0 ? true : false;
+      let minexpResult = filters.minexpfilter.length === 0 ? true : false;
+      let locationResult = filters.locFilter.length === 0 ? true : false;
+      let remoteResult =
+        filters.remoteFilter === ""
+          ? true
+          : filters.remoteFilter === "remote"
+          ? job.location === "remote"
+            ? true
+            : false
+          : job.location === "remote"
+          ? false
+          : true;
+      let minSalResult =
+        job.minJdSalary !== null && job.minJdSalary >= filters.minSalFilter
+          ? true
+          : false;
+
+      console.log(roleResult + " " + minexpResult);
       for (let role in filters.roleFilter) {
-        if (job.jobRole.includes(filters.roleFilter[role])) result = true;
+        if (job.jobRole.includes(filters.roleFilter[role])) roleResult = true;
       }
-      return result;
+      for (let exp in filters.minexpfilter) {
+        if (job.minExp != null && job.minExp === filters.minexpfilter[exp])
+          minexpResult = true;
+      }
+      for (let loc in filters.locFilter) {
+        if (
+          job.location != null &&
+          job.location.includes(filters.locFilter[loc])
+        )
+          locationResult = true;
+      }
+      return (
+        roleResult &&
+        minexpResult &&
+        locationResult &&
+        remoteResult &&
+        minSalResult
+      );
     } else {
       return true;
     }
@@ -118,7 +164,17 @@ const Jobs = () => {
                 </div>
               );
             })}
-          {loading && <ScaleLoader />}
+          {isLoading && (
+            <ScaleLoader
+              cssOverride={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                marginTop: "50px",
+                marginBottom: "50px",
+              }}
+            />
+          )}
         </div>
       </div>
     </>

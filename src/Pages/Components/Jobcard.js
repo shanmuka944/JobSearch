@@ -15,7 +15,7 @@ const Jobcard = ({ job, index }) => {
           <h4>{job.jobRole}</h4>
         </div>
         <div className="card-body">
-          <h5 className="card-title">About Company</h5>
+          <h5 className="card-title">About Company - {job.minJdSalary}</h5>
           <p className="card-text">
             {readMore
               ? job.jobDetailsFromCompany
