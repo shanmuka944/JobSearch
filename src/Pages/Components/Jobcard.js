@@ -18,7 +18,9 @@ const Jobcard = ({ job, index }) => {
             <img src={logo} alt="" />
           </div>
           <div className="col-9 detailsContainer">
-            <div className="companyName">Google</div>
+            <div className="companyName">
+              {job.companyName ? `${job.companyName}` : "Google"}
+            </div>
             <div className="roleContainer text-capitalize">{job.jobRole}</div>
             <div className="loationContainer text-capitalize">
               {job.location}
